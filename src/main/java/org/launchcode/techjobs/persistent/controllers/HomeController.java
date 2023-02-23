@@ -1,8 +1,11 @@
 package org.launchcode.techjobs.persistent.controllers;
 
+import org.launchcode.techjobs.persistent.models.Employer;
 import org.launchcode.techjobs.persistent.models.Job;
+import org.launchcode.techjobs.persistent.models.Skill;
 import org.launchcode.techjobs.persistent.models.data.EmployerRepository;
 import org.launchcode.techjobs.persistent.models.data.JobRepository;
+import org.launchcode.techjobs.persistent.models.data.SkillRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -11,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Created by LaunchCode
@@ -25,6 +29,9 @@ public class HomeController { //the HomeController is essentially the JobControl
     @Autowired
     private JobRepository jobRepository;
 
+    @Autowired
+    private SkillRepository skillRepository;
+
     @RequestMapping("")
     public String index(Model model) {
 
@@ -38,27 +45,35 @@ public class HomeController { //the HomeController is essentially the JobControl
         model.addAttribute("title", "Add Job");
         model.addAttribute(new Job());
         model.addAttribute("employers", employerRepository.findAll());
+        model.addAttribute("skills", skillRepository.findAll()); //skillRepository doesn't work
         return "add";
     }
 
     @PostMapping("add")//saves a valid Job object
     public String processAddJobForm(@ModelAttribute @Valid Job newJob,
-                                       Errors errors, Model model) {//I removed the Request parameters
+                                       Errors errors, Model model, @RequestParam List<Integer> skills) {//I removed the Request parameters
 
         if (errors.hasErrors()) {
             model.addAttribute("title", "Add Job");
             return "add";
         }
-//Part 3...this is in place of section 3 and 4. use the jobRepository to save our newJob to the database
-
-        jobRepository.save(newJob);  //can't get rid of red squiggly, Ive added @AutoWired JobRepository in EmployerController and HomeController
+        List<Skill> skillObjs = (List<Skill>) skillRepository.findAllById(skills);
+        newJob.setManySkills(skillObjs);
+        jobRepository.save(newJob);
         return "redirect:";
     }
 
     @GetMapping("view/{jobId}")
     public String displayViewJob(Model model, @PathVariable int jobId) {
+        Optional optJob = jobRepository.findById(jobId);
+        if (optJob.isPresent()) {
+            Job job = (Job) optJob.get();
+            model.addAttribute("job", job);
+            return "view";
+        } else {
+            return "redirect:../";
+        }
 
-        return "view";
     }
 
 

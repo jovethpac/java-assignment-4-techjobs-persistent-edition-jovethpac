@@ -1,10 +1,17 @@
 package org.launchcode.techjobs.persistent.models;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 public class Job extends AbstractEntity{ //extends AbstractEntity and remove id, name and getters and setters and hash equals
 
+    @ManyToOne //many jobs to one employer
+    private Employer employer;//manyToOneEmployer is a made up variable
+
+    @ManyToMany
+    private List<Skill> manySkills; //= new ArrayList<>(); //manySkills is a variable I made up which I will use later at Skill.java Skill
 //    @Id
 //    @GeneratedValue
 //    private int id;
@@ -12,21 +19,33 @@ public class Job extends AbstractEntity{ //extends AbstractEntity and remove id,
 //    private String name;
 
     //private String employer;
-    private String Employer;
-    private String skills;
 
     public Job() { //empty constructor
     }
 
-    public Job(String anEmployer, String someSkills) {
+    public Job(Employer anEmployer, List<Skill> someSkills) {
         super();
-        //this.employer = anEmployer;
-        this.Employer = anEmployer;
-        this.skills = someSkills;
+        this.employer = anEmployer;
+        this.manySkills = someSkills;
     }
 
-    @ManyToOne //many jobs to one employer
-    private Employer manyToOneEmployer; //manyToOneEmployer is a made up variable
+    public Employer getEmployer(){
+        return employer;
+    }
+
+    public void setEmployer(Employer employer) {
+        this.employer = employer;
+    }
+
+    public Iterable<Skill> getManySkills() {
+        return manySkills;
+    }
+
+    public void setManySkills(List<Skill> manySkills) {
+        this.manySkills = manySkills;
+    }
+
+
     // Getters and setters.
 
 //    public String getName() {
@@ -37,19 +56,19 @@ public class Job extends AbstractEntity{ //extends AbstractEntity and remove id,
 //        this.name = name;
 //    }
 
-    public String getEmployer() {
-        return Employer;
-    }
-
-    public void setEmployer(String employer) {
-        this.Employer = employer;
-    }
-
-    public String getSkills() {
-        return skills;
-    }
-
-    public void setSkills(String skills) {
-        this.skills = skills;
-    }
+//    public String getEmployer() {
+//        return Employer;
+//    }
+//
+//    public void setEmployer(String employer) {
+//        this.employer = employer;
+//    }
+//
+//    public String getSkills() {
+//        return skills;
+//    }
+//
+//    public void setSkills(String skills) {
+//        this.skills = skills;
+//    }
 }

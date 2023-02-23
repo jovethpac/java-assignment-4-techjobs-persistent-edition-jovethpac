@@ -19,8 +19,8 @@ public class Employer extends AbstractEntity {
     public Employer() {
     }
 
-    @OneToMany(mappedBy = "manyToOneEmployer")
-    //@JoinColumn(name="employer_id")
+    @OneToMany
+    @JoinColumn(name="employer_id")
     private final List<Job> oneToManyjobs = new ArrayList<>();  //oneToManyjobs is a made up variable Job matches the Job class
 
 
