@@ -51,7 +51,7 @@ public class HomeController { //the HomeController is essentially the JobControl
 
     @PostMapping("add")//saves a valid Job object
     public String processAddJobForm(@ModelAttribute @Valid Job newJob,
-                                       Errors errors, Model model, @RequestParam List<Integer> skills) {//I removed the Request parameters
+                                       Errors errors, Model model, @RequestParam List<Integer> skills) {
 
         if (errors.hasErrors()) {
             model.addAttribute("title", "Add Job");
