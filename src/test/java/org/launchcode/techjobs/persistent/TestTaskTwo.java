@@ -361,9 +361,9 @@ public class TestTaskTwo extends AbstractTest {
 //        }
 //
 //        Annotation annotation = indexMethod.getDeclaredAnnotation(RequestMapping.class);
-//
-//        // Verify that index has a routing annotation. We need to accommodate
-//        // both @RequestMapping and @GetMapping.
+
+        // Verify that index has a routing annotation. We need to accommodate
+        // both @RequestMapping and @GetMapping.
 //        if (annotation == null) {
 //            annotation = indexMethod.getDeclaredAnnotation(GetMapping.class);
 //        }
